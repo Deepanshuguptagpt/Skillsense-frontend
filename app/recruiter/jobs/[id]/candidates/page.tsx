@@ -58,8 +58,8 @@ function CandidateCard({
 }) {
   const router = useRouter();
   const breakdown = candidate.score_breakdown?.skill_details ?? [];
-  const matched = breakdown.filter((s: any) => s.severity === 'none').length;
-  const missing = breakdown.filter((s: any) => s.severity === 'critical').length;
+  const matched = breakdown.filter((s: Record<string, unknown>) => s.severity === 'none').length;
+  const missing = breakdown.filter((s: Record<string, unknown>) => s.severity === 'critical').length;
 
   return (
     <div className="card hover:border-indigo-200 hover:shadow-md transition-all cursor-pointer group"
@@ -119,16 +119,16 @@ function CandidateCard({
           {breakdown.length > 0 && (
             <div className="mt-2 flex flex-wrap gap-1.5">
               {breakdown
-                .filter((s: any) => s.severity === 'none')
+                .filter((s: Record<string, unknown>) => s.severity === 'none')
                 .slice(0, 4)
-                .map((s: any) => (
-                  <span key={s.skill_name} className="rounded-full bg-emerald-50 border border-emerald-200 px-2 py-0.5 text-xs text-emerald-700">
-                    {s.skill_name}
+                .map((s: Record<string, unknown>) => (
+                  <span key={s.skill_name as string} className="rounded-full bg-emerald-50 border border-emerald-200 px-2 py-0.5 text-xs text-emerald-700">
+                    {s.skill_name as string}
                   </span>
                 ))}
-              {breakdown.filter((s: any) => s.severity === 'critical').slice(0, 2).map((s: any) => (
-                <span key={s.skill_name} className="rounded-full bg-red-50 border border-red-200 px-2 py-0.5 text-xs text-red-600">
-                  -{s.skill_name}
+              {breakdown.filter((s: Record<string, unknown>) => s.severity === 'critical').slice(0, 2).map((s: Record<string, unknown>) => (
+                <span key={s.skill_name as string} className="rounded-full bg-red-50 border border-red-200 px-2 py-0.5 text-xs text-red-600">
+                  -{s.skill_name as string}
                 </span>
               ))}
             </div>

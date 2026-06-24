@@ -4,8 +4,8 @@ import { useEffect, useState } from 'react';
 import { useParams, useSearchParams, useRouter } from 'next/navigation';
 import {
   ArrowLeft, User, Mail, Building, GraduationCap, Github, Linkedin,
-  CheckCircle, AlertCircle, XCircle, Star, BarChart2, Briefcase,
-  BookOpen, ExternalLink, Code2, Shield, Zap, Award, TrendingUp,
+  CheckCircle, AlertCircle, XCircle, Star, BarChart2,
+  BookOpen, ExternalLink, Shield, Award,
 } from 'lucide-react';
 import RecruiterLayout from '@/components/Layout/RecruiterLayout';
 import { useRecruiter } from '@/hooks/useRecruiter';
@@ -43,7 +43,7 @@ interface CandidateDetail {
   readiness_score?: number;
   readiness_classification?: string;
   match_score?: number;
-  match_score_breakdown?: any;
+  match_score_breakdown?: Record<string, unknown>;
   github_projects?: GitHubProject[];
   skills?: SkillItem[];
 }
@@ -103,9 +103,9 @@ export default function CandidateDetailPage() {
 
   useEffect(() => {
     if (candidateId) {
-      getCandidateDetail(candidateId, jobId).then((d) => setCandidate(d as any));
+      getCandidateDetail(candidateId, jobId).then((d) => setCandidate(d as CandidateDetail));
     }
-  }, [candidateId, jobId]);
+  }, [candidateId, jobId, getCandidateDetail]);
 
   if (isLoading || !candidate) {
     return (
@@ -119,7 +119,7 @@ export default function CandidateDetailPage() {
     );
   }
 
-  const skillDetails: any[] = candidate.match_score_breakdown?.skill_details ?? [];
+  const skillDetails = (candidate.match_score_breakdown?.skill_details as Array<Record<string, unknown>>) ?? [];
   const skills = candidate.skills ?? [];
   const githubProjects = candidate.github_projects ?? [];
   const matchScore = candidate.match_score ?? 0;
@@ -235,7 +235,7 @@ export default function CandidateDetailPage() {
         {/* Tabs */}
         <div className="flex gap-1 rounded-xl bg-slate-100 p-1">
           {tabs.map(({ id, label, icon: Icon }) => (
-            <button key={id} onClick={() => setActiveTab(id as any)}
+            <button key={id} onClick={() => setActiveTab(id as 'overview' | 'skills' | 'github' | 'match')}
               className={`flex-1 flex items-center justify-center gap-1.5 rounded-lg px-3 py-2 text-xs font-semibold transition-all ${
                 activeTab === id ? 'bg-white text-slate-900 shadow-sm' : 'text-slate-500 hover:text-slate-700'
               }`}>
@@ -409,7 +409,7 @@ export default function CandidateDetailPage() {
               </p>
             ) : (
               <div className="space-y-3">
-                {skillDetails.map((s: any) => {
+                {skillDetails.map((s: Record<string, unknown>) => {
                   const severityConfig: Record<string, { cls: string; label: string }> = {
                     none:     { cls: 'text-emerald-600', label: 'Met' },
                     minor:    { cls: 'text-amber-600',   label: 'Minor gap' },
@@ -422,10 +422,10 @@ export default function CandidateDetailPage() {
                   const barColor = s.severity === 'none' ? 'bg-emerald-500' : s.severity === 'minor' ? 'bg-amber-500' : 'bg-red-400';
 
                   return (
-                    <div key={s.skill_name} className="rounded-lg border border-slate-100 bg-slate-50 p-3">
+                    <div key={s.skill_name as string} className="rounded-lg border border-slate-100 bg-slate-50 p-3">
                       <div className="flex items-center justify-between gap-3 mb-2">
                         <div className="flex items-center gap-2 min-w-0">
-                          <span className="text-sm font-medium text-slate-800 truncate">{s.skill_name}</span>
+                          <span className="text-sm font-medium text-slate-800 truncate">{s.skill_name as string}</span>
                           {s.mandatory && (
                             <span className="rounded-full bg-red-100 px-1.5 py-0.5 text-xs font-medium text-red-600 flex-shrink-0">Required</span>
                           )}

@@ -3,8 +3,8 @@
 import { useQuery } from '@tanstack/react-query';
 import { useRouter } from 'next/navigation';
 import {
-  BarChart2, Users, TrendingUp, AlertTriangle, CheckCircle,
-  Star, ChevronRight, Briefcase, Clock, ArrowRight, Sparkles
+  BarChart2, TrendingUp, AlertTriangle, CheckCircle,
+  Star, ChevronRight, Briefcase, ArrowRight, Sparkles
 } from 'lucide-react';
 import api from '@/lib/api';
 import { API_ROUTES } from '@/lib/constants';

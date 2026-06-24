@@ -43,9 +43,9 @@ export default function RecruiterJobsPage() {
     }));
   };
 
-  const handleSkillChange = (index: number, field: string, value: any) => {
+  const handleSkillChange = (index: number, field: string, value: string | number | boolean) => {
     const newSkills = [...formData.requiredSkills];
-    (newSkills[index] as any)[field] = value;
+    (newSkills[index] as Record<string, string | number | boolean>)[field] = value;
     setFormData({ ...formData, requiredSkills: newSkills });
   };
 
@@ -65,9 +65,9 @@ export default function RecruiterJobsPage() {
       deadline: formData.deadline ? new Date(formData.deadline).toISOString() : undefined,
       requiredSkills: formData.requiredSkills.map(s => ({
         name: s.name,
-        proficiencyLevel: parseInt(s.proficiencyLevel as any),
+        proficiencyLevel: parseInt(s.proficiencyLevel as unknown as string),
         mandatory: s.mandatory,
-        weight: parseFloat(s.weight as any)
+        weight: parseFloat(s.weight as unknown as string)
       }))
     };
 
@@ -153,7 +153,7 @@ export default function RecruiterJobsPage() {
                   </p>
 
                   <div className="flex flex-wrap gap-1.5 pt-4 border-t border-slate-50">
-                    {job.required_skills?.slice(0, 3).map((skill: any) => (
+                    {job.required_skills?.slice(0, 3).map((skill: { name: string }) => (
                       <span key={skill.name} className="px-2 py-1 rounded-md bg-slate-50 border border-slate-100 text-[10px] font-bold text-slate-600">
                         {skill.name}
                       </span>

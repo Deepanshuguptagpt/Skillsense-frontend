@@ -57,15 +57,6 @@ export default function SkillGenieWidget() {
   const { messages, isTyping, sendMessage, sgContext, proactiveSuggestions } =
     useSkillGenie();
 
-  // Don't show on excluded paths or for recruiters
-  if (
-    EXCLUDED_PATHS.some((p) => pathname.startsWith(p)) ||
-    user?.role === 'recruiter' ||
-    pathname.startsWith('/recruiter')
-  ) {
-    return null;
-  }
-
   // Auto-scroll
   useEffect(() => {
     if (isOpen && !isMinimized) {
@@ -79,6 +70,15 @@ export default function SkillGenieWidget() {
       setTimeout(() => inputRef.current?.focus(), 100);
     }
   }, [isOpen, isMinimized]);
+
+  // Don't show on excluded paths or for recruiters
+  if (
+    EXCLUDED_PATHS.some((p) => pathname.startsWith(p)) ||
+    user?.role === 'recruiter' ||
+    pathname.startsWith('/recruiter')
+  ) {
+    return null;
+  }
 
   // Send greeting when first opened
   const handleOpen = () => {

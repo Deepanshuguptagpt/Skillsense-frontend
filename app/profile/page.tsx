@@ -28,7 +28,6 @@ import {
   BookOpen,
   RefreshCw,
   Sparkles,
-  LogOut,
   Trash2,
   AlertTriangle,
 } from 'lucide-react';
@@ -77,7 +76,6 @@ export default function ProfilePage() {
   const { data: targetRoles = [] } = useTargetRoles();
   const setTargetRole = useSetTargetRole();
   const queryClient = useQueryClient();
-  const router = useRouter();
   const { deleteAccount, isDeletingAccount } = useAuth();
 
   // Handle OAuth callback — check URL params for github_status

@@ -64,7 +64,7 @@ class MockAuthStore {
     }
 
     // Return user without password
-    const { password: _, ...userWithoutPassword } = user;
+    const { password, ...userWithoutPassword } = user;
     return {
       success: true,
       user: userWithoutPassword,
